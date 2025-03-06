@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Hi+Melody&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css');
+
+/****************************** DETAIL START *********************************/
+
+.detail_notice {
+	background: #f4f4f4;
+	padding: 15px;
+}
+.detail_notice ul li {
+	line-height: 25px;
+	list-style-type: square;
+}
+.detail_notice span {
+	color: var(--danger);
+	font-size: 20px;
+	font-weight: 600;
+}
+table.detail_table {
+	margin-top: 20px;
+	border-collapse: collapse;
+	border: 1px solid #ddd;
+	text-align: left;
+}
+table.detail_table thead {
+	border-bottom: 1px solid #e2e2e2;
+}
+table.detail_table th, .table.detail_table td {
+	padding: 7px 10px;
+}
+
+/****************************** DETAIL END *********************************/

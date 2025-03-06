@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<Resource
+		name="jdbc/mydb"
+		type="javax.sql.DataSource"
+		auth="Container"
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+		driverClassName="com.mysql.cj.jdbc.Driver"
+		url="jdbc:mysql://localhost:3306/mydb?useUnicode=true&amp;characterEncoding=UTF-8"
+		username="jmlee"
+		password="wjdals12!!"
+		maxTotal="50"
+		maxIdle="10"
+		minIdle="5"
+		maxWaitMillis="10000"
+		initialSize="5"
+	/>
+</Context>
