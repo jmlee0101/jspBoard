@@ -259,6 +259,9 @@ tbody tr:hover{
 	padding-right: 30px;
 	padding-left: 10px;
 }
+.memberPage>ul {
+	margin-top: 40px;
+}
 /******* 버튼 **********/
 a.btn, button.btn{
     border:none;

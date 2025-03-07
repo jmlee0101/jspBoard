@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="jspboard.Paging" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%-- <%@ page import=" java.sql.*, java.util.*, java.text.*, jspboard.* " %> --%>
@@ -23,10 +23,26 @@
     </script> 
  </c:if>
  
- <c:set var="pg" value="${ empty param.pg ? 1 : param.pg }" />
+<c:set var="pg" 
+       value="${param.pg ne null and not empty param.pg ? param.pg : 1 }" />
+<c:set var="listSize" value="${ param.listSize ne null and not empty param.listSize ? param.listSize : 10 }" />
  
  <jsp:useBean id="dao" class="jspboard.BoardDAO" scope="page" />
- <c:set var="mList" value="${dao.getMemberList(pg, 5)}" />
+ <c:set var="mList" value="${dao.getMemberList(pg, 10)}" />
+ <c:set var="totalPosts" value="${ dao.getTotalMember() }" />
+ 
+ <%
+// el 변수를 자바변수로 변환
+	int currentPage = Integer.parseInt(pageContext.getAttribute("pg").toString());
+	int totalPosts = Integer.parseInt(pageContext.getAttribute("totalPosts").toString());
+	int postsPerPage = Integer.parseInt(pageContext.getAttribute("listSize").toString());
+	
+	int pagesPerBlock = 10;
+
+	Paging paging = new Paging(currentPage, totalPosts, postsPerPage, pagesPerBlock);
+	
+	request.setAttribute("paging", paging);
+%>
  
  <%-- <%  
      return;
@@ -62,6 +78,11 @@
 	
 %> --%>
 <h1 class="text-center">${ loginUserId }  님, 환영합니다.</h1>
+<div class="memberPage">
+<div class="init-text d-flex">
+    <div class="all-text"><i class="ri-first-list-line"></i>총 게시물&nbsp;&nbsp;<span><fmt:formatNumber value="${ totalPosts }"/></span> 건</div>
+    <div class="now-text">현재 페이지&nbsp;&nbsp;<span>${ pg }/${ paging.getTotalPages() }</span></div>
+</div>
 <table class="list-table">
             <colgroup>
                 <col width="5%">
@@ -113,8 +134,33 @@
 	            		
 	            	</c:otherwise>
 	            </c:choose>
-
             </tbody>
         </table>
+		<ul class="paging">
+        	<c:if test="${ paging.getStartPage() > 1 }">
+	        	<!-- 처음 페이지로 이동 -->
+	            <li><a href="memberList.jsp?pg=1&listSize=${listSize}" class="first"><i class="ri-arrow-left-double-line"></i></a></li>
+	            
+	        	<!-- 이전 페이지로 이동 -->
+	            <li><a href="memberList.jsp?pg=${ paging.getStartPage() - 1 }&listSize=${listSize}" class="prev"><i class="ri-arrow-left-s-line"></i></a></li>
+            </c:if>
+            
+            <c:forEach var="i" begin="${paging.getStartPage()}" end="${paging.getEndPage()}" varStatus="status">
+            	<li>
+            		<a href="memberList.jsp?pg=${ i }&listSize=${listSize}"
+            			class="${ i == pg ?  'act' : ''}">${ i }</a>
+            	</li>
+            	
+            </c:forEach>
+            
+            <c:if test="${ paging.getEndPage() < paging.getTotalPages() }">
+            <!-- 다음 페이지로 이동 -->
+            <li><a href="memberList.jsp?pg=${ paging.getEndPage() + 1 }&listSize=${listSize}" class="next"><i class="ri-arrow-right-s-line"></i></a></li>
+            
+            <!-- 마지막 페이지로 이동 -->
+            <li><a href="memberList.jsp?pg=${ paging.getTotalPages() }&listSize=${listSize}" class="last"><i class="ri-arrow-right-double-line"></i></a></li>
+            </c:if>
+        </ul>
+</div>
 	
 <%@ include file="../include/footer.jsp" %>

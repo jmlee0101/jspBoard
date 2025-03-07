@@ -4,6 +4,7 @@
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +56,24 @@ import javax.sql.DataSource;
 	   }
 	   
 	   return totalPosts;
+   }
+   
+//  회원관리 전체 목록 카운트
+   public int getTotalMember() {
+	   String sql = "SELECT COUNT(*) FROM MEMBERS";
+	   int result = 0;
+	   
+	   	try {
+	   		Statement st = conn.createStatement();
+	   		ResultSet rs = st.executeQuery(sql);
+	   		
+	   		if(rs.next()) result = rs.getInt(1);
+
+	   	} catch(SQLException e) {
+	   		e.printStackTrace();
+	   	}
+	   
+	   return result;
    }
    
    public List<BoardDTO> getListBoards(int pg, int listSize, String searchOption, String searchKeyword) {
